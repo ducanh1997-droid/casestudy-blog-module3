@@ -26,6 +26,17 @@ public class Account {
         this.status = status;
     }
 
+    public Account(String userName, String passWord, String fullName, String phoneNumber, String email, String address, boolean role, boolean status) {
+        this.userName = userName;
+        this.passWord = passWord;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.role = role;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }

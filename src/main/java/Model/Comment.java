@@ -1,22 +1,38 @@
 package Model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class Comment {
     private  int id;
-    private Blog blog_id;
-    private Account account_id;
-    private Comment comment_id;
+    private String content;
 
-    public Comment() {
+    public String getContent() {
+        return content;
+    }
+    public LocalDateTime createAT;
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public Comment(Blog blog_id, Account account_id, Comment comment_id) {
+    private int blog_id;
+    private int account_id;
+    private int comment_id;
+
+    public Comment(int id, String content, LocalDateTime createAT, int blog_id, int account_id, int comment_id) {
+        this.id = id;
+        this.content = content;
+        this.createAT = createAT;
         this.blog_id = blog_id;
         this.account_id = account_id;
         this.comment_id = comment_id;
     }
 
-    public Comment(int id, Blog blog_id, Account account_id, Comment comment_id) {
-        this.id = id;
+    public Comment(String content, LocalDateTime createAT, int blog_id, int account_id, int comment_id) {
+        this.content = content;
+        this.createAT = createAT;
         this.blog_id = blog_id;
         this.account_id = account_id;
         this.comment_id = comment_id;
@@ -30,27 +46,37 @@ public class Comment {
         this.id = id;
     }
 
-    public Blog getBlog_id() {
+
+
+    public void setCreateAT(LocalDateTime createAT) {
+        this.createAT = createAT;
+    }
+
+    public int getBlog_id() {
         return blog_id;
     }
 
-    public void setBlog_id(Blog blog_id) {
+    public void setBlog_id(int blog_id) {
         this.blog_id = blog_id;
     }
 
-    public Account getAccount_id() {
+    public int getAccount_id() {
         return account_id;
     }
 
-    public void setAccount_id(Account account_id) {
+    public void setAccount_id(int account_id) {
         this.account_id = account_id;
     }
 
-    public Comment getComment_id() {
+    public int getComment_id() {
         return comment_id;
     }
 
-    public void setComment_id(Comment comment_id) {
+    public void setComment_id(int comment_id) {
         this.comment_id = comment_id;
+    }
+
+    public LocalDateTime getCreateAT() {
+        return createAT;
     }
 }
