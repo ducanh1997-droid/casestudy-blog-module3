@@ -11,15 +11,8 @@ import java.io.IOException;
 public class AccountServlet extends HttpServlet {
     private AccountService accountService = new AccountService();
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("name");
-        if(action==null){
-            action="";
-        }
-        RequestDispatcher rd= request.getRequestDispatcher("WEB-LOGIN/login_register.jsp");
-        rd.forward(request,response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        String action =request.getParameter("action");
