@@ -3,38 +3,55 @@ package Service;
 import DAO.AccountDAO;
 import Model.Account;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountService {
-    List<Account> listAccount;
-    public AccountDAO accountDAO;
+    private AccountDAO accountDAO;
     public  AccountService () {
-    listAccount=new ArrayList<>();
     accountDAO=new AccountDAO();
     }
-    public Account login(String name,String password){
-       return accountDAO.checkLoginAccount(name,password);
-
-    }
-    public boolean createAccount(HttpServletRequest request, HttpServletResponse response){
-        String useName =request.getParameter("name");
-        String email=request.getParameter("email");
-        String passWord=request.getParameter("passWord");
-        String fullName=request.getParameter("fullName");
-        String phoneNumber=request.getParameter("phoneNumber");
-        String address=request.getParameter("address");
-        if (Regex.checkRegexUserName(useName)&&Regex.checkRegexEmail(email)&&Regex.checkRegexPassWord(passWord)
-                &&Regex.checkRegexPhoneNumber(phoneNumber)&&Regex.checkRegexAddress(address)){
-            Account account = new Account(useName,passWord,fullName,phoneNumber,email,address,false,true);
-           accountDAO.create(account);
-            if(accountDAO.create(account)){
-                return true;
-            }
+    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("username");
+        String password = request.getParameter("password");
+        Account account = accountDAO.checkLoginAccount(name, password);
+        if (account == null) {
+            request.setAttribute("condition", "login");
+            request.setAttribute("status", "false");
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-LOGIN/login_register.jsp");
+            rd.forward(request, response);
+        } else {
+            request.setAttribute("account", account);
+            RequestDispatcher rd = request.getRequestDispatcher("");
+            rd.forward(request, response);
         }
-       return false;
+    }
+    public void createAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String useName = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String fullName = request.getParameter("fullName");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String address = request.getParameter("address");
+        Account account = new Account(useName, password, fullName, phoneNumber, email, address, false, true);
+        accountDAO.create(account);
+        if (accountDAO.create(account)) {
+            request.setAttribute("status", "success");
+        }else{
+            request.setAttribute("status", "false");
+            request.setAttribute("password",password);
+            request.setAttribute("fullName",fullName);
+            request.setAttribute("phoneNumber",phoneNumber);
+            request.setAttribute("address",address);
+        }
+        request.setAttribute("condition","register");
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-LOGIN/login_register.jsp");
+        rd.forward(request, response);
     }
 }

@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Account;
-import Service.Regex;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,14 +20,12 @@ public Account checkLoginAccount(String name,String passWord){
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, passWord);
-if (  (Regex.checkRegexUserName(name)||  Regex.checkRegexUserName(name)&&Regex.checkRegexPassWord(passWord))){
     ResultSet resultSet = preparedStatement.executeQuery();
     while (resultSet.next()) {
         account = new Account(resultSet.getInt(1),
                 resultSet.getString(2),resultSet.getString(3),resultSet.getString(4)
                 ,resultSet.getString(5),resultSet.getString(6),resultSet.getString(7), resultSet.getBoolean(8), resultSet.getBoolean(9));
 }
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,7 +36,6 @@ if (  (Regex.checkRegexUserName(name)||  Regex.checkRegexUserName(name)&&Regex.c
             preparedStatement.setString(1,account.getUserName());
             preparedStatement.setString(2,account.getEmail());
             preparedStatement.setString(3,account.getPassWord());
-
             ResultSet resultSet = preparedStatement.executeQuery();
             int size = 0;
             while (resultSet.next()){
