@@ -22,10 +22,12 @@ public Account checkLoginAccount(String name,String passWord){
             preparedStatement.setString(3, passWord);
     ResultSet resultSet = preparedStatement.executeQuery();
     while (resultSet.next()) {
-        account = new Account(resultSet.getInt(1),
-                resultSet.getString(2),resultSet.getString(3),resultSet.getString(4)
-                ,resultSet.getString(5),resultSet.getString(6),resultSet.getString(7), resultSet.getBoolean(8), resultSet.getBoolean(9));
-}
+        if (resultSet.getBoolean(9)) {
+            account = new Account(resultSet.getInt(1),
+                    resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)
+                    , resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getBoolean(8), resultSet.getBoolean(9));
+        }
+    }
         } catch (SQLException e) {
             e.printStackTrace();
         }

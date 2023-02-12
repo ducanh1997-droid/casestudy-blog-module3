@@ -1,29 +1,30 @@
 package Model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Blog  {
     private int id;
     private String title;
     private  String content;
-    private Date date;
+    private LocalDate date;
     private String author;
-    private Category category_id;
-    private Account account_id;
+    private Category category;
+    private Account account;
     private String status;
     private String image;
 
     public Blog() {
     }
 
-    public Blog(int id, String title, String content, Date date, String author, Category category_id, Account account_id, String status, String image) {
+    public Blog(int id, String title, String content, LocalDate date, String author, Category category, Account account, String status, String image) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.date = date;
         this.author = author;
-        this.category_id = category_id;
-        this.account_id = account_id;
+        this.category = category;
+        this.account = account;
         this.status = status;
         this.image = image;
     }
@@ -52,11 +53,11 @@ public class Blog  {
         this.content = content;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -68,20 +69,20 @@ public class Blog  {
         this.author = author;
     }
 
-    public Category getCategory_id() {
-        return category_id;
+    public Category getCategory() {
+        return category;
     }
 
     public void setCategory_id(Category category_id) {
-        this.category_id = category_id;
+        this.category = category_id;
     }
 
     public Account getAccount_id() {
-        return account_id;
+        return account;
     }
 
     public void setAccount_id(Account account_id) {
-        this.account_id = account_id;
+        this.account = account_id;
     }
 
     public String getStatus() {

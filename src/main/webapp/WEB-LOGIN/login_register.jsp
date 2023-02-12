@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Title</title>
+    <title></title>
 </head>
 <style>
     #successRegister {
@@ -245,7 +245,8 @@
         let p= document.getElementById("password1").value
         let ph= document.getElementById("phoneNumber").value
         let e= document.getElementById("email").value
-        document.getElementById("registerButton").disabled = !(a !== "" && u !== "" && p !== "" && ph !== "" && e !== ""&&aw === "none" && uw === "none" && pw === "none" && phw === "none" && ew === "none");
+        let f= document.getElementById("fullName").value
+        document.getElementById("registerButton").disabled = !(a !== "" && u !== "" && p !== "" && ph !== "" && e !== ""&& f!==""&&aw === "none" && uw === "none" && pw === "none" && phw === "none" && ew === "none");
     }
 </script>
 </body>
