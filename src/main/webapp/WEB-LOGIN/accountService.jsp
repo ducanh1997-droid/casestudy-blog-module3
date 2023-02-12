@@ -16,7 +16,7 @@
   <button id="accountDetail" onclick="showAccountDetail()">Account information</button>
   <button id="Blog" onclick="showMyBlog()" >My posted blog </button>
   <button id="myComment">My Comment</button>
-    <button id="security">Password and security</button>
+    <button id="security" onclick="showSecurity()">Password and security</button>
 </div>
 <div id="accountInformation" style="display:
 <c:choose>
@@ -106,7 +106,7 @@
         </c:forEach>
     </table>
     </div>
-    <div id="blogReq" style="display:
+    <div id="blogReq" style="border: 1px solid black;display:
         <c:choose>
         <c:when test="${requestScope.blogReq!= null}">
                 block">
@@ -115,10 +115,31 @@
                 none">
             </c:otherwise>
             </c:choose>
-                <c:set var="b" value="${requestScope.blogReq}"></c:set>
-        <p>${b.title}</p>
-        <p>${b.content}</p>
+        <p>${requestScope.blogReq.title}</p>
+        <p>${requestScope.blogReq.content}</p>
     </div>
+</div>
+<div id="mySecurity" style="display:
+<c:choose>
+<c:when test="${requestScope.Security=='block'}">
+        block">
+    </c:when>
+    <c:otherwise>
+    none">
+    </c:otherwise>
+    </c:choose>
+        <select id="securityChange">
+            <option></option>
+            <option id="password"  >Change username,email and password </option>
+            <option id="secondSecurity" >Set your two-step verification </option>
+        </select>
+    <button onclick="confirmChoice()">Confirm</button>
+        <div id="verifyPassword" style="display: none">
+            <label for="password1">Input your password to continue</label><br>
+            <input type="text" id="password1" onchange="checkPassword()">
+            <span id="passWarning1" style="color: red;display: none">!!Wrong password!!</span>
+        </div>
+
 </div>
 <script>
 <%--Dành cho phần Account information --%>
@@ -126,12 +147,22 @@
         if (document.getElementById("accountInformation").style.display==="none"){
             document.getElementById("accountInformation").style.display="block";
             document.getElementById("myBlog").style.display="none";
+            document.getElementById("mySecurity").style.display="none";
+
         }
     }
 function showMyBlog(){
     if (document.getElementById("myBlog").style.display==="none"){
         document.getElementById("myBlog").style.display="block";
         document.getElementById("accountInformation").style.display="none";
+        document.getElementById("mySecurity").style.display="none";
+    }
+}
+function showSecurity(){
+    if (document.getElementById("mySecurity").style.display==="none"){
+        document.getElementById("mySecurity").style.display="block";
+        document.getElementById("accountInformation").style.display="none";
+        document.getElementById("myBlog").style.display="none";
     }
 }
     function editInform(){
@@ -224,6 +255,21 @@ function showMyBlog(){
         document.getElementById("confirm").disabled = !(aw==="none"&&phw==="none"&&a!==""&&ph!==""&&f!==""&&check)
     }
     // -----------------------------------------------------------------
+function confirmChoice(){
+        if (document.getElementById("securityChange").value==="Change username,email and password"){
+document.getElementById("verifyPassword").style.display="block";
+        }
+}
+function checkPassword(){
+        if (document.getElementById("password1").value==="${requestScope.account.passWord}"){
+            document.getElementById("password1").style.display="none";
+            document.getElementById("password1").value="";
+            document.getElementById("passWarning1").style.display="none";
+            document.getElementById("verifyPassword").style.display="none"
+        }else{
+            document.getElementById("passWarning1").style.display="block";
+        }
+}
 </script>
 </body>
 </html>
