@@ -40,16 +40,16 @@ public class AccountService {
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
         Account account = new Account(useName, password, fullName, phoneNumber, email, address, false, true);
-        accountDAO.create(account);
-        if (accountDAO.create(account)) {
-            request.setAttribute("status", "success");
-        }else{
+//        accountDAO.create(account);
+//        if (accountDAO.create(account)) {
+//            request.setAttribute("status", "success");
+//        }else{
             request.setAttribute("status", "false");
             request.setAttribute("password",password);
             request.setAttribute("fullName",fullName);
             request.setAttribute("phoneNumber",phoneNumber);
             request.setAttribute("address",address);
-        }
+//        }
         request.setAttribute("condition","register");
         RequestDispatcher rd = request.getRequestDispatcher("WEB-LOGIN/login_register.jsp");
         rd.forward(request, response);

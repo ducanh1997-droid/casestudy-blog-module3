@@ -27,7 +27,7 @@
     none">
 </c:otherwise>
 </c:choose>
-    <form>
+    <form >
     <table>
         <tr>
             <td>Username:</td>
@@ -41,14 +41,14 @@
             <td>Full name:</td>
             <td>
                 <p id="displayFullName">${requestScope.account.fullName}</p>
-                <input id="fullName" style=" display:none" onchange="checkRegexFullName()" value="${requestScope.account.fullName}">
+                <input id="fullName" name="fullName" style=" display:none" onchange="checkRegexFullName()" value="${requestScope.account.fullName}">
             </td>
         </tr>
         <tr>
             <td>PhoneNumber:</td>
             <td>
                 <p id="displayPhoneNumber">${requestScope.account.phoneNumber}</p>
-                <input id="phoneNumber" onchange="checkRegexPhoneNumber()" style=" display:none" value="${requestScope.account.phoneNumber}">
+                <input id="phoneNumber" name="phoneNumber" onchange="checkRegexPhoneNumber()" style=" display:none" value="${requestScope.account.phoneNumber}">
                 <span id="phoneWarning" style="color: red;display: none">Your phone isn't suit with phone format  </span>
             </td>
         </tr>
@@ -56,7 +56,7 @@
             <td>Address:</td>
             <td>
                 <p id="displayAddress">${requestScope.account.address}</p>
-                <input id="address" onchange="checkRegexAddress()" style=" display:none" value="${requestScope.account.address}">
+                <input id="address" name="address" onchange="checkRegexAddress()" style=" display:none" value="${requestScope.account.address}">
                 <span id="addressWarning" style="color: red;display: none">Your address isn't suit with address format  </span>
             </td>
         </tr>
@@ -135,12 +135,49 @@
         </select>
     <button onclick="confirmChoice()">Confirm</button>
         <div id="verifyPassword" style="display: none">
-            <label for="password1">Input your password to continue</label><br>
+            <label id="labelPassword1" for="password1">Input your password to continue</label><br>
             <input type="text" id="password1" onchange="checkPassword()">
             <span id="passWarning1" style="color: red;display: none">!!Wrong password!!</span>
         </div>
-
+        <div id="securityEditForm" style="display: none">
+            <form>
+                <table>
+                    <tr>
+                        <td>Username:</td>
+                        <td>
+                            <p id="displayUsername1" >${requestScope.account.userName}</p><input id="username1" style=" display:none" name="username1" onchange="checkRegexUsername()" value="${requestScope.account.userName}">
+                            <span id="nameWarning" style="color: red;display: none">Your username invalid(from 8-15 characters contain 0 -9,a-z,A-Z,-,_, ) </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>
+                            <p id="displayEmail1">${requestScope.account.email}</p><input id="email1" style=" display:none" name="email1" onchange="checkRegexEmail()" value="${requestScope.account.email}">
+                            <span id="emailWarning" style="color: red;display: none">Your email isn't suit with email format  </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td>
+                            <p id="displayPassword">${requestScope.account.passWord}</p><input id="password2" style=" display:none" onchange="checkRegexPassword()" name="password2" value="${requestScope.account.passWord}">
+                            <span id="passWarning" style="color: red;display: none">Your password isn't suit with the password format  </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="repassTitle" style="display: none">Re-enter your new password:</td>
+                        <td>
+                            <input id="rePassword" onchange="check1()" style=" display:none" name="password2" value="${requestScope.account.passWord}">
+                            <span id="warning" style="color: red;display: none">Your repass isn't match with the password you entered </span>
+                        </td>
+                    </tr>
+                </table>
+                <button id="editSecurity" type="button" value="" onclick="editSecure()">Edit your profile</button>
+                <button id="confirm1" type="submit" disabled style="display: none">Confirm change</button>
+                <button id="abort1" type="button" style="display: none" onclick="editSecure()">Abort changing</button>
+            </form>
+        </div>
 </div>
+
 <script>
 <%--Dành cho phần Account information --%>
     function showAccountDetail(){
@@ -156,6 +193,7 @@ function showMyBlog(){
         document.getElementById("myBlog").style.display="block";
         document.getElementById("accountInformation").style.display="none";
         document.getElementById("mySecurity").style.display="none";
+        document.getElementById("blogReq").style.display="none";
     }
 }
 function showSecurity(){
@@ -163,6 +201,7 @@ function showSecurity(){
         document.getElementById("mySecurity").style.display="block";
         document.getElementById("accountInformation").style.display="none";
         document.getElementById("myBlog").style.display="none";
+        document.getElementById("securityChange").value="";
     }
 }
     function editInform(){
@@ -201,26 +240,28 @@ function showSecurity(){
         }else{
             document.getElementById("nameWarning").style.display="none";
         }
+        checkConfirmCondition1()
     }
     function checkRegexEmail(){
-        let email = document.getElementById("email").value;
+        let email = document.getElementById("email1").value;
         let pattern = /[^@]{2,64}@[^.]{2,253}\.[0-9a-z-.]{2,63}/;
         if (!pattern.test(email)){
             document.getElementById("emailWarning").style.display="block";
         }else{
             document.getElementById("emailWarning").style.display="none";
         }
+        checkConfirmCondition1()
     }
     function checkRegexPassword(){
-        check()
-        let password = document.getElementById("password1").value;
+        check1()
+        let password = document.getElementById("password2").value;
         let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
         if (!pattern.test(password)){
             document.getElementById("passWarning").style.display="block";
         }else{
             document.getElementById("passWarning").style.display="none";
         }
-        checkRegisterCondition()
+        checkConfirmCondition1()
     }
     function checkRegexPhoneNumber(){
         let phone = document.getElementById("phoneNumber").value;
@@ -255,20 +296,77 @@ function showSecurity(){
         document.getElementById("confirm").disabled = !(aw==="none"&&phw==="none"&&a!==""&&ph!==""&&f!==""&&check)
     }
     // -----------------------------------------------------------------
+// for Password and security
+function checkConfirmCondition1(){
+    let nw= document.getElementById("nameWarning").style.display
+    let ew= document.getElementById("emailWarning").style.display
+    let pw= document.getElementById("passWarning").style.display
+    let n= document.getElementById("username1").value
+    let e= document.getElementById("email1").value
+    let p= document.getElementById("password2").value
+    let check= (n!==document.getElementById("displayUsername1").innerHTML)||(e!==document.getElementById("displayEmail1").innerHTML)||(p!==document.getElementById("displayPassword").innerHTML);
+    document.getElementById("confirm1").disabled = !(nw==="none"&&ew==="none"&&pw==="none"&&n!==""&&e!==""&&p!==""&&check)
+}
 function confirmChoice(){
         if (document.getElementById("securityChange").value==="Change username,email and password"){
 document.getElementById("verifyPassword").style.display="block";
+        }else{
+            document.getElementById("verifyPassword").style.display="none";
+            document.getElementById("password1").value="";
+            document.getElementById("passWarning1").style.display="none";
         }
 }
 function checkPassword(){
         if (document.getElementById("password1").value==="${requestScope.account.passWord}"){
             document.getElementById("password1").style.display="none";
+            document.getElementById("labelPassword1").style.display="none";
             document.getElementById("password1").value="";
             document.getElementById("passWarning1").style.display="none";
-            document.getElementById("verifyPassword").style.display="none"
+            document.getElementById("verifyPassword").style.display="none";
+            document.getElementById("securityEditForm").style.display="block";
+
         }else{
             document.getElementById("passWarning1").style.display="block";
         }
+}
+    function check1(){
+        if(document.getElementById("password2").value !== document.getElementById("rePassword").value){
+            document.getElementById("warning").style.display="block";
+        }else{
+            document.getElementById("warning").style.display="none";
+        }
+    }
+function editSecure(){
+    let confirm = document.getElementById("confirm1");
+    if(confirm.style.display==="none"){
+        confirm.style.display="block";
+        confirm.disabled = "true";
+        document.getElementById("abort1").style.display="block";
+        document.getElementById("editSecurity").style.display="none";
+        document.getElementById("displayUsername1").style.display="none";
+        document.getElementById("displayEmail1").style.display="none";
+        document.getElementById("displayPassword").style.display="none";
+        document.getElementById("username1").style.display="block";
+        document.getElementById("email1").style.display="block";
+        document.getElementById("password2").style.display="block";
+        document.getElementById("rePassword").style.display="block";
+        document.getElementById("repassTitle").style.display="block";
+        document.getElementById("username1").value=document.getElementById("displayUsername1").innerHTML;
+        document.getElementById("email1").value=document.getElementById("displayEmail1").innerHTML;
+        document.getElementById("password2").value=document.getElementById("displayPassword").innerHTML;
+        document.getElementById("rePassword").value=document.getElementById("displayPassword").innerHTML;
+    }else {
+        confirm.style.display="none";
+        document.getElementById("abort1").style.display="none";
+        document.getElementById("editSecurity").style.display="block";
+        document.getElementById("displayUsername1").style.display="block";
+        document.getElementById("displayEmail1").style.display="block";
+        document.getElementById("displayPassword").style.display="block";
+        document.getElementById("username1").style.display="none";
+        document.getElementById("email1").style.display="none";
+        document.getElementById("password2").style.display="none";
+        document.getElementById("rePassword").style.display="none";
+    }
 }
 </script>
 </body>
